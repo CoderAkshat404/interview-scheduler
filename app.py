@@ -1,62 +1,68 @@
-from flask import Flask, render_template, request, send_file
-import pandas as pd
 from fpdf import FPDF
 from datetime import datetime, timedelta
+import pandas as pd
+from flask import Flask, request, send_file
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    if request.method == 'POST':
+        file = request.files['excel_file']
+        start_time_str = request.form['start_time']
+        duration = int(request.form['duration'])
+        break_time = int(request.form['break_time'])
 
-@app.route('/schedule', methods=['GET', 'POST'])
-def schedule():
-    if request.method == 'GET':
-        # Prevent direct GET access to /schedule, redirect to home
-        return render_template('index.html')
+        df = pd.read_excel(file)
+        df['Domain'] = df['Domain'].astype(str)
+        base_start_time = datetime.strptime(start_time_str, '%H:%M')
 
-    file = request.files['file']
-    start_time_str = request.form['start_time']
-    duration = int(request.form['duration'])
+        # Organize applicants by domain
+        domain_applicants = {}
+        for _, row in df.iterrows():
+            name = row['Name']
+            domains = [d.strip() for d in row['Domain'].split(',')]
+            for domain in domains:
+                domain_applicants.setdefault(domain, []).append(name)
 
-    # Read Excel file
-    df = pd.read_excel(file)
+        # Prepare PDF
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+        pdf.cell(200, 10, txt="Interview Schedule", ln=True, align='C')
+        pdf.ln(10)
 
-    # Ensure required columns are present
-    if 'Name' not in df.columns or 'Domain' not in df.columns:
-        return "Excel must have 'Name' and 'Domain' columns", 400
+        current_time = base_start_time
 
-    # Group by domain
-    grouped = df.groupby('Domain')
+        for domain, applicants in domain_applicants.items():
+            pdf.set_font("Arial", style='B', size=12)
+            pdf.cell(200, 10, txt=domain, ln=True)
+            pdf.set_font("Arial", size=12)
 
-    start_time = datetime.strptime(start_time_str, "%H:%M")
-    final_schedule = []
+            for name in applicants:
+                time_str = current_time.strftime('%H:%M')
+                pdf.cell(200, 10, txt=f"{time_str} - {name}", ln=True)
+                current_time += timedelta(minutes=duration)
 
-    for domain, group in grouped:
-        domain_time = start_time
-        for _, row in group.iterrows():
-            final_schedule.append({
-                'Name': row['Name'],
-                'Domain': domain,
-                'Time': domain_time.strftime('%H:%M')
-            })
-            domain_time += timedelta(minutes=duration)
+            # Add break after domain schedule
+            current_time += timedelta(minutes=break_time)
+            pdf.ln(5)
 
-    # Create PDF
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Interview Schedule", ln=True, align='C')
-    pdf.ln(10)
+        output_filename = "interview_schedule.pdf"
+        pdf.output(output_filename)
 
-    for item in final_schedule:
-        line = f"{item['Time']} - {item['Name']} ({item['Domain']})"
-        pdf.cell(200, 10, txt=line, ln=True)
+        return send_file(output_filename, as_attachment=True)
 
-    output_path = "schedule.pdf"
-    pdf.output(output_path)
-
-    return send_file(output_path, as_attachment=True)
+    # HTML form with break time input
+    return '''
+    <form method="post" enctype="multipart/form-data">
+        Excel File: <input type="file" name="excel_file"><br>
+        Start Time (HH:MM): <input type="text" name="start_time"><br>
+        Duration per interview (minutes): <input type="number" name="duration"><br>
+        Break time between domains (minutes): <input type="number" name="break_time"><br>
+        <input type="submit" value="Generate Schedule">
+    </form>
+    '''
 
 if __name__ == '__main__':
     app.run(debug=True)
