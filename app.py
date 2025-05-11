@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, redirect, url_for
+from flask import Flask, request, send_file, redirect, url_for, render_template
 from fpdf import FPDF
 from datetime import datetime, timedelta
 import pandas as pd
@@ -61,7 +61,7 @@ def index():
         for f in os.listdir(OUTPUT_FOLDER):
             os.remove(os.path.join(OUTPUT_FOLDER, f))
 
-        # Organize applicants
+        # Organize applicants by domain
         domain_applicants = {}
         for _, row in df.iterrows():
             name = str(row[name_col]).strip()
@@ -98,25 +98,7 @@ def index():
 
         return redirect(url_for('download_all'))
 
-    return '''
-    <h2>Interview Scheduler with WhatsApp Contact Export</h2>
-    <form method="post" enctype="multipart/form-data">
-        <label>Excel File (Google Form response):</label><br>
-        <input type="file" name="excel_file" required><br><br>
-
-        <label>Start Time (HH:MM):</label><br>
-        <input type="text" name="start_time" placeholder="e.g., 10:00" required><br><br>
-
-        <label>Duration per interview (minutes):</label><br>
-        <input type="number" name="duration" required><br><br>
-
-        <label>Schedule interviews:</label><br>
-        <input type="radio" name="schedule_type" value="separate_days" checked> On Separate Days<br>
-        <input type="radio" name="schedule_type" value="same_day"> On Same Day<br><br>
-
-        <input type="submit" value="Generate PDFs + VCFs">
-    </form>
-    '''
+    return render_template('index.html')
 
 @app.route('/download_all')
 def download_all():

@@ -1,21 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Interview Scheduler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #c9d6ff, #e2e2e2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 800;
+            color: #333;
+        }
+
+        label {
+            font-weight: 600;
+            margin-top: 15px;
+            display: block;
+            color: #444;
+        }
+
+        input[type="file"],
+        input[type="time"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border 0.2s;
+        }
+
+        input[type="file"]:hover,
+        input[type="time"]:hover,
+        input[type="number"]:hover {
+            border-color: #6c63ff;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        input[type="submit"] {
+            background: #6c63ff;
+            color: white;
+            padding: 12px 20px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background: #574fd6;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Upload Excel File</h1>
-    <form action="/schedule" method="POST" enctype="multipart/form-data">
-        <label for="file">Select Excel file:</label>
-        <input type="file" name="file" accept=".xlsx" required><br><br>
+    <div class="container">
+        <h2>Interview Scheduler</h2>
+        <form method="post" enctype="multipart/form-data">
+            <label for="excel_file">Excel File (Google Form response):</label>
+            <input type="file" name="excel_file" id="excel_file" required>
 
-        <label for="start_time">Start Time (HH:MM):</label>
-        <input type="time" name="start_time" required><br><br>
+            <label for="start_time">Start Time:</label>
+            <input type="time" name="start_time" id="start_time" required>
 
-        <label for="duration">Duration per candidate (minutes):</label>
-        <input type="number" name="duration" required><br><br>
+            <label for="duration">Duration per interview (minutes):</label>
+            <input type="number" name="duration" id="duration" min="1" required>
 
-        <input type="submit" value="Generate Schedule">
-    </form>
+            <label>Schedule interviews:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="schedule_type" value="separate_days" checked> On Separate Days</label>
+                <label><input type="radio" name="schedule_type" value="same_day"> On Same Day</label>
+            </div>
+
+            <input type="submit" value="Generate PDFs + VCFs">
+        </form>
+    </div>
 </body>
 </html>
