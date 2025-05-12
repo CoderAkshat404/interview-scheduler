@@ -3,155 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <title>Interview Scheduler</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(180deg,rgb(100, 92, 249),rgb(0, 0, 0));
-      min-height: 100vh;
+      position: relative;
+      height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-    }
-
-    .main-container {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-      display: flex;
-      max-width: 1000px;
-      width: 90%;
+      justify-content: center;
+      background: url("{{ url_for('static', filename='background5.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
       overflow: hidden;
     }
 
-    .illustration-section {
-      background: #f9f9f9;
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      transition: opacity 0.4s ease;
     }
 
-    .illustration-section img {
-      max-width: 100%;
+    .container {
       height: auto;
+      width: 90%;
+      max-width: 850px;
+      background: rgba(95, 58, 26, 0.1);
+      backdrop-filter: blur(0.67px);
+      -webkit-backdrop-filter: blur(6.7px);
+      border-radius: 20px;
+      padding: 40px;
+      transition: transform 0.3s ease;
+      text-align: center;
+      border: 0.5px solid #999;
     }
 
-    .form-section {
-      flex: 1;
-      padding: 40px;
+    .container:hover {
+      transform: scale(1.02);
     }
 
     h2 {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 20px;
-      color: #333;
-      text-align: center;
+      font-size: 35px;
+      color: #fefde6;
+      margin-bottom: 30px;
+      font-weight: bold;
+      transition: transform 0.3s ease;
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
+    h2:hover {
+      transform: scale(1.05);
     }
 
     label {
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #444;
-      font-size: 15px;
+      font-size: 20px;
+      display: block;
+      text-align: left;
+      color: #fefde6;
+      margin-bottom: 8px;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+
+    label:hover {
+      transform: scale(1.05);
     }
 
     input[type="file"],
-    input[type="text"],
     input[type="time"],
     input[type="number"] {
-      padding: 12px 14px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
+      font-size: large;
+      width: 100%;
+      padding: 10px;
       border-radius: 8px;
-      font-size: 14px;
-      transition: border 0.3s;
+      border: none;
+      margin-bottom: 20px;
     }
 
-    input:hover {
-      border-color: #6c63ff;
+    input[type="file"]:hover,
+    input[type="time"]:hover,
+    input[type="number"]:hover {
+      transform: scale(1.02);
     }
 
     .radio-group {
+      text-align: left;
       margin-bottom: 20px;
+      color: #fefde6;
     }
 
     .radio-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 500;
+      margin-right: 20px;
+      transition: transform 0.3s ease;
     }
 
-    input[type="submit"] {
-      background: #6c63ff;
-      color: white;
-      padding: 12px;
+    .radio-group label:hover {
+      transform: scale(1.05);
+    }
+
+    .btn {
+      background-color: #08385d;
+      color: #fefde6;
       border: none;
+      padding: 12px 20px;
       border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
-    input[type="submit"]:hover {
-      background: #574fd6;
+    .btn:hover {
+      background-color: #08385d;
+      transform: scale(1.15);
     }
 
-    @media (max-width: 768px) {
-      .main-container {
-        flex-direction: column;
-      }
-
-      .illustration-section {
+    @media (max-width: 600px) {
+      .container {
         padding: 20px;
       }
 
-      .form-section {
-        padding: 20px;
+      h2 {
+        font-size: 22px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="main-container">
-    <div class="illustration-section">
-      <img src="{{ url_for('static', filename='2.png') }}" alt="Illustration">
-    </div>
-    <div class="form-section">
-      <h2>Interview Scheduler</h2>
-      <form method="post" enctype="multipart/form-data">
-        <label for="excel_file">Upload Excel File</label>
-        <input type="file" name="excel_file" id="excel_file" required>
+  <div class="container">
+    <h2>Get Your Interviews Scheduled!</h2>
+    <form method="post" enctype="multipart/form-data">
+      <label for="excel_file">Upload Google Form Responses (Excel File)</label>
+      <input type="file" name="excel_file" id="excel_file" required />
 
-        <label for="start_time">Start Time</label>
-        <input type="time" name="start_time" id="start_time" required>
+      <label for="start_time">Interview Start Time</label>
+      <input type="time"  name="start_time" id="start_time" required/>
 
-        <label for="duration">Duration per interview (minutes)</label>
-        <input type="number" name="duration" id="duration" min="1" required>
+      <label for="duration">Duration per interview (minutes)</label>
+      <input type="number" name="duration" id="duration" min="1" required>
+      <br>
+      <div class="radio-group">
+        <label><input type="radio" name="schedule_type" value="separate_days" checked> On Separate Days</label>
+        <label><input type="radio" name="schedule_type" value="same_day"> On Same Day</label>
+      </div>
 
-        <label>Schedule interviews</label>
-        <div class="radio-group">
-          <label><input type="radio" name="schedule_type" value="separate_days" checked> On Separate Days</label>
-          <label><input type="radio" name="schedule_type" value="same_day"> On Same Day</label>
-        </div>
-
-        <input type="submit" value="Generate PDFs + VCFs">
-      </form>
-    </div>
+      <button type="submit" class="btn">Generate PDFs + VCFs</button>
+    </form>
   </div>
 </body>
 </html>
