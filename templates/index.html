@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Interview Scheduler</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdtimepicker/mdtimepicker.min.css">
   <style>
     * {
       box-sizing: border-box;
@@ -14,7 +13,7 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: #6c63ff;
+      background: linear-gradient(180deg,rgb(100, 92, 249),rgb(0, 0, 0));
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -55,6 +54,7 @@
       font-weight: 800;
       margin-bottom: 20px;
       color: #333;
+      text-align: center;
     }
 
     form {
@@ -71,6 +71,7 @@
 
     input[type="file"],
     input[type="text"],
+    input[type="time"],
     input[type="number"] {
       padding: 12px 14px;
       margin-bottom: 20px;
@@ -80,9 +81,7 @@
       transition: border 0.3s;
     }
 
-    input[type="text"]:hover,
-    input[type="number"]:hover,
-    input[type="file"]:hover {
+    input:hover {
       border-color: #6c63ff;
     }
 
@@ -130,7 +129,7 @@
 <body>
   <div class="main-container">
     <div class="illustration-section">
-      <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="Illustration">
+      <img src="{{ url_for('static', filename='2.png') }}" alt="Illustration">
     </div>
     <div class="form-section">
       <h2>Interview Scheduler</h2>
@@ -139,7 +138,7 @@
         <input type="file" name="excel_file" id="excel_file" required>
 
         <label for="start_time">Start Time</label>
-        <input type="text" name="start_time" id="start_time" required placeholder="e.g. 10:30 AM">
+        <input type="time" name="start_time" id="start_time" required>
 
         <label for="duration">Duration per interview (minutes)</label>
         <input type="number" name="duration" id="duration" min="1" required>
@@ -154,16 +153,5 @@
       </form>
     </div>
   </div>
-
-  <!-- Time picker script -->
-  <script src="https://cdn.jsdelivr.net/npm/mdtimepicker/mdtimepicker.min.js"></script>
-  <script>
-    window.onload = () => {
-      mdtimepicker('#start_time', {
-        format: 'hh:mm TT',
-        theme: 'purple'
-      });
-    };
-  </script>
 </body>
 </html>
