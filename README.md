@@ -39,7 +39,7 @@ This inspired us to build **Interview Scheduler** — a tool to automate and sim
 ## 🚀 Getting Started (Local Setup)
 
 1. **Clone the repository**:
-   git clone https://github.com/your-username/interview-scheduler.git
+   git clone https://github.com/CoderAkshat404/interview-scheduler.git
    cd interview-scheduler
 
 2. **Create a virtual environment**
