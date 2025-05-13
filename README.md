@@ -45,37 +45,28 @@ This inspired us to build **Interview Scheduler** — a tool to automate and sim
 
 2. **Create a virtual environment**
 
-python -m venv venv
+    python -m venv venv
 
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install dependencies**
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
 
 4. **Run the application**
 
-python app.py
+    python app.py
 
-Open your browser and go to http://localhost:5000
+    Open your browser and go to http://localhost:5000
 
-📁 **Folder Structure**
-
-├── app.py
-├── templates/
-│   └── index.html
-├── static/
-│   └── background.jpg
-├── generated/
-│   └── (PDFs & VCFs generated here)
-├── requirements.txt
-└── README.md
 
 🤝 **Contributors**
-Akshat Mishra
 
-Akshata Bakre
+    Akshat Mishra
+
+    Akshata Bakre
 
 📬 **Feedback**
-If you have any suggestions, feel free to open an issue or submit a pull request. We'd love to improve this tool further!
+
+    If you have any suggestions, feel free to open an issue or submit a pull request. We'd love to improve this tool further!
