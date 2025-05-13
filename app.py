@@ -112,5 +112,8 @@ def download_all():
 
     return send_file(zip_path, as_attachment=True)
 
+# ✅ This section is updated for Railway deployment
+import os
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=port)
