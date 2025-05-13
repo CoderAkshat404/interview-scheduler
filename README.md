@@ -40,11 +40,13 @@ This inspired us to build **Interview Scheduler** — a tool to automate and sim
 
 1. **Clone the repository**:
    git clone https://github.com/CoderAkshat404/interview-scheduler.git
+
    cd interview-scheduler
 
 2. **Create a virtual environment**
 
 python -m venv venv
+
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install dependencies**
@@ -55,6 +57,7 @@ pip install -r requirements.txt
 4. **Run the application**
 
 python app.py
+
 Open your browser and go to http://localhost:5000
 
 📁 **Folder Structure**
@@ -71,6 +74,7 @@ Open your browser and go to http://localhost:5000
 
 🤝 **Contributors**
 Akshat Mishra
+
 Akshata Bakre
 
 📬 **Feedback**
